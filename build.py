@@ -82,6 +82,7 @@ def msbuild(name, debug = False):
     os.environ['CONFIGURATION'] = configuration
 
     os.environ['PLATFORM'] = 'Any CPU'
+    os.environ['XCPPLATFORM'] = 'Any CPU'
 
     os.environ['SOLUTION'] = name
     os.environ['TARGET'] = 'Build'
