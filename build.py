@@ -38,6 +38,7 @@ import shutil
 import tarfile
 import subprocess
 import imp
+from subprocess import Popen, PIPE
 
 (brandingFile, brandingPath, brandingDesc) = imp.find_module("branding",["src\\branding"])
 branding = imp.load_module("branding",brandingFile,brandingPath,brandingDesc)
@@ -59,11 +60,15 @@ def make_header():
 def shell(command):
     print (command)
     sys.stdout.flush()
-    pipe = os.popen(command, 'r', 1)
-    for line in pipe:
+
+    with Popen(command, shell=True, stdout=PIPE, stderr=PIPE, stdin=PIPE) as p:
+        output, errors = p.communicate()
+    lines = output.splitlines()
+    
+    for line in lines:
         print(line.rstrip())
 
-    return pipe.close()
+    return p.stdin.close()
 
 
 def msbuild(name, debug = False):
